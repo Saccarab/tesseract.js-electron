@@ -7,20 +7,20 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
   </head>
   <body>
-    <script>
-      const { createWorker } = require('tesseract.js');
-      const path = require('path');
+    <script type="module">
+      import Tesseract from "./node_modules/tesseract.js/dist/tesseract.esm.min.js";
 
-      const worker = createWorker({
-        cachePath: path.join(__dirname, 'lang-data'),
+      const worker = Tesseract.createWorker({
+        workerPath: "./node_modules/tesseract.js/dist/worker.min.js",
         logger: m => console.log(m),
+        workerBlobURL: false
       });
 
       (async () => {
         await worker.load();
         await worker.loadLanguage('eng');
         await worker.initialize('eng');
-        const { data: { text } } = await worker.recognize(path.join(__dirname, 'images', 'testocr.png'));
+        const { data: { text } } = await worker.recognize("./images/testocr.png");
         console.log(text);
         await worker.terminate();
       })();
