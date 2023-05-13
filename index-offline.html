@@ -12,12 +12,16 @@
 
       const worker = await Tesseract.createWorker({
         workerPath: "./node_modules/tesseract.js/dist/worker.min.js",
+        corePath: "../../../node_modules/tesseract.js-core/",
         logger: m => console.log(m),
         workerBlobURL: false
       });
 
       (async () => {
-        await worker.loadLanguage('eng');
+        const langRes = await fetch("./lang-data/eng.traineddata");
+        const langData = new Uint8Array(await langRes.arrayBuffer());
+        await worker.FS("writeFile", ["eng.traineddata", langData]);
+
         await worker.initialize('eng');
         const { data: { text } } = await worker.recognize("./images/testocr.png");
         console.log(text);
