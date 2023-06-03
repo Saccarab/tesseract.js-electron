@@ -12,16 +12,17 @@
 
       const worker = await Tesseract.createWorker({
         workerPath: "./node_modules/tesseract.js/dist/worker.min.js",
+        // Unlike when used in a browser, corePath and langPath are resolved relative the worker using Electron.
         corePath: "../../../node_modules/tesseract.js-core/",
+        langPath: "../../../lang-data",
         logger: m => console.log(m),
+        // Disable gzip since the eng.traineddata file we are using is already uncompressed
+        gzip: false,
         workerBlobURL: false
       });
 
       (async () => {
-        const langRes = await fetch("./lang-data/eng.traineddata");
-        const langData = new Uint8Array(await langRes.arrayBuffer());
-        await worker.FS("writeFile", ["eng.traineddata", langData]);
-
+        await worker.loadLanguage("eng");
         await worker.initialize('eng');
         const { data: { text } } = await worker.recognize("./images/testocr.png");
         console.log(text);
