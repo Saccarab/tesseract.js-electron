@@ -8,9 +8,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron": "^24.3.0"
+    "electron": "^26.4.2"
   },
   "dependencies": {
-    "tesseract.js": "^4.1.0"
+    "tesseract.js": "^5.0.2"
   }
 }

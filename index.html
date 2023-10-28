@@ -10,15 +10,13 @@
   <body>
     <script type="module">
 
-      const worker = await Tesseract.createWorker({
+      const worker = await Tesseract.createWorker("eng", 1, {
         workerPath: "./node_modules/tesseract.js/dist/worker.min.js",
         logger: m => console.log(m),
         workerBlobURL: false
       });
 
       (async () => {
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
         const { data: { text } } = await worker.recognize("./images/testocr.png");
         console.log(text);
         await worker.terminate();

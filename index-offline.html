@@ -10,7 +10,7 @@
   <body>
     <script type="module">
 
-      const worker = await Tesseract.createWorker({
+      const worker = await Tesseract.createWorker("eng", 1, {
         workerPath: "./node_modules/tesseract.js/dist/worker.min.js",
         // Unlike when used in a browser, corePath and langPath are resolved relative the worker using Electron.
         corePath: "../../../node_modules/tesseract.js-core/",
@@ -22,8 +22,6 @@
       });
 
       (async () => {
-        await worker.loadLanguage("eng");
-        await worker.initialize('eng');
         const { data: { text } } = await worker.recognize("./images/testocr.png");
         console.log(text);
         await worker.terminate();
