@@ -1,3 +1,7 @@
+// Import Babel to transpile code
+require('@babel/register')({
+  presets: ['@babel/preset-env', '@babel/preset-react']
+});
 const { app, BrowserWindow } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -8,7 +12,10 @@ function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true, // Enable Node.js integration
+    },
   })
 
   // and load the index.html of the app.
